@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yearly Two-Metric Heatmap</title>
+  <style>
+    :root {
+      --cell: 14px;         /* cell size */
+      --gap: 3px;           /* gap between cells */
+      --radius: 3px;        /* corner radius */
+      --green-h: 145;       /* hue for applications */
+      --blue-h: 210;        /* hue for reachouts */
+    }
+    /* THEME TOKENS */
+    body[data-theme='dark'] {
+      --bg: #0b0c10;
+      --panel: #11131a;
+      --text: #e6e8ec;
+      --muted: #9aa3b2;
+      --border: #1f2330;
+      --inactive: #2a2f40;
+      --zero: #1a1f2d;
+      --shadow: 0 10px 30px rgba(0,0,0,0.3);
+      /* background theme vars */
+      --bg-plain: #0f0f0f;
+      --bg-line: rgba(0, 255, 128, 0.1);
+    }
+    body[data-theme='light'] {
+      --bg: #f7f9fb;
+      --panel: #ffffff;
+      --text: #1a1a1a;
+      --muted: #4f5d75;
+      --border: #d0d6e0;
+      --inactive: #e5e7eb;
+      --zero: #f3f4f6;
+      --shadow: 0 10px 24px rgba(0,0,0,0.08);
+      /* background theme vars */
+      --bg-plain: #fafafa;
+      --bg-line: rgba(255, 0, 100, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 1100px; margin: 32px auto; padding: 24px; position: relative; z-index: 1; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 16px 20px;
+      box-shadow: var(--shadow);
+    }
+    h1 { font-size: 20px; margin: 0 0 8px; letter-spacing: .2px; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    button {
+      appearance: none; border: 1px solid var(--border); background: var(--panel); color: var(--text);
+      padding: 10px 12px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px;
+      transition: transform .04s ease, background .2s ease, border-color .2s ease;
+    }
+    button:hover { background: var(--inactive); }
+    button:active { transform: translateY(1px); }
+
+    .legend { display: flex; align-items: center; gap: 12px; margin-left: auto; color: var(--muted); font-size: 12px; }
+    .legend .swatch {
+      width: 80px; height: 12px; border-radius: 6px; border: 1px solid var(--border);
+      background: linear-gradient(90deg, var(--zero), #28c76f);
+    }
+    .legend .swatch.blue { background: linear-gradient(90deg, var(--zero), #1e90ff); }
+
+    .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .year-select { margin-left: auto; display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+    select { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
+
+    .grid-wrap { position: relative; overflow-x: auto; padding: 8px 4px 4px; }
+    .month-labels { position: sticky; top: 0; background: var(--panel);
+      display: block; padding: 6px 4px; padding-left: 38px; height: 24px;
+      z-index: 2; border-bottom: 1px solid var(--border); }
+    
+    .month-labels .m { position: absolute; top: 6px; color: var(--muted); font-size: 11px; white-space: nowrap; }
+    
+
+    .grid {
+      display: grid;
+      grid-auto-flow: column;          /* weeks as columns */
+      grid-auto-columns: var(--cell);  /* each column is a week */
+      grid-template-rows: repeat(7, var(--cell)); /* days as rows */
+      gap: var(--gap);
+      padding: 10px 4px 4px 38px;  /* left room for day labels */
+      position: relative;
+    }
+
+    .day-labels {
+      position: absolute; left: 6px; top: 10px; width: 30px; display: grid; grid-template-rows: repeat(7, var(--cell));
+      gap: var(--gap); color: var(--muted); font-size: 10px; text-align: right; padding-right: 4px; user-select: none;
+    }
+    .cell {
+      width: var(--cell); height: var(--cell); border-radius: var(--radius);
+      background: var(--zero);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .cell.out { background: var(--inactive); opacity: .4; }
+    .cell:hover { outline: 1px solid rgba(60, 80, 120, .4); outline-offset: 1px; }
+    .cell:focus { outline: 2px solid #3b82f6; outline-offset: 1px; }
+
+    .tooltip {
+      position: fixed; z-index: 50; pointer-events: none; padding: 8px 10px; border-radius: 10px; font-size: 12px;
+      background: var(--panel); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow);
+      opacity: 0; transform: translateY(-4px); transition: opacity .12s ease, transform .12s ease;
+      white-space: nowrap;
+    }
+    .tooltip.show { opacity: 1; transform: translateY(0); }
+
+    .footer { color: var(--muted); font-size: 12px; margin-top: 10px; display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+    .badges { display: flex; gap: 10px; align-items: center; }
+    .badge { font-size: 11px; color: var(--muted); background: var(--panel); border: 1px solid var(--border); padding: 4px 8px; border-radius: 999px; }
+
+    .modal[hidden] { display:none; }
+    .modal { position: fixed; inset: 0; z-index: 80; }
+    .modal .backdrop { position:absolute; inset:0; background: rgba(0,0,0,.4); }
+    .modal .dialog {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: min(480px, calc(100vw - 24px)); background: var(--panel); color: var(--text);
+      border: 1px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: var(--shadow);
+    }
+    /* themed background grid */
+    .bg-theme { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-color: var(--bg-plain);
+      background-image:
+        repeating-linear-gradient(45deg, var(--bg-line) 0, var(--bg-line) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(-45deg, var(--bg-line) 0, var(--bg-line) 1px, transparent 1px, transparent 20px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="bg-theme" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="panel">
+      <div class="topbar">
+        <h1>Yearly Application Heatmap</h1>
+        <div class="legend" title="Color intensity auto-scales to your yearly maximum">
+          <span>Apps</span><span class="swatch" id="appsLegend"></span>
+          <span>Reach</span><span class="swatch blue" id="reachLegend"></span>
+          <button id="toggleTheme" style="margin-left:8px;">Toggle Theme</button>
+        </div>
+      </div>
+      <div class="sub">Top half = Job Applications • Bottom half = Cold Reachouts. Click the buttons to add today's activity. Double‑click a cell to edit that day. Everything is saved in your browser.</div>
+
+      <div class="controls">
+        <button id="addApp">+1 Job Application</button>
+        <button id="addReach">+1 Cold Reachout</button>
+        <button id="editDay" title="Edit a specific day (or double‑click a cell)">✎ Edit Day</button>
+        <button id="exportData" title="Download all years as JSON">Export Data</button>
+        <button id="importData" title="Import from a previously exported JSON file">Import Data</button>
+        <input type="file" id="importFile" accept="application/json" hidden />
+        <div class="year-select"><label for="year">Year</label><select id="year"></select></div>
+      </div>
+    </div>
+    <div class="grid-wrap">
+      <div class="month-labels" id="monthLabels"></div>
+      <div class="grid" id="grid">
+        <div class="day-labels" aria-hidden="true">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="chartPanel" style="margin-top:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-weight:600;">Daily Trend (year to date)</div>
+        <div id="chartMeta" class="sub" style="margin:0;"></div>
+      </div>
+      <svg id="trendChart" width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none" role="img" aria-label="Daily line chart"></svg>
+    </div>
+    <div class="footer">
+      <div class="badges"><span class="badge" id="totalsBadge"></span><span class="badge" id="todayBadge"></span></div>
+      <div style="opacity:.7">LocalStorage key: <code id="lsKey"></code></div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip" role="dialog" aria-live="polite"></div>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal" hidden>
+    <div class="backdrop" id="modalBackdrop"></div>
+    <form class="dialog" id="editorForm">
+      <h2 style="margin:0 0 8px;font-size:16px;">Edit Day</h2>
+      <p style="margin:0 0 12px;color:var(--muted);font-size:12px;">Adjust counts for a specific date. Tip: double‑click a cell.</p>
+      <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Date</label>
+      <input type="date" id="editDate" required style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);margin-bottom:10px;" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Job Applications</label>
+          <input type="number" id="editApps" min="0" step="1" required style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Cold Reachouts</label>
+          <input type="number" id="editReach" min="0" step="1" required style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);" />
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
+        <button type="button" id="deleteDay" style="background:#b91c1c;color:#fff;border-color:#b91c1c;">Delete Day</button>
+        <button type="button" id="cancelEdit">Cancel</button>
+        <button type="submit" id="saveEdit" style="background:#2563eb;color:#fff;border-color:#2563eb;">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    (function(){
+      // THEME
+      const body = document.body;
+      const toggleThemeBtn = document.getElementById('toggleTheme');
+      const stored = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = stored || (systemPrefersDark ? 'dark' : 'light');
+      applyTheme(initialTheme);
+      function applyTheme(theme){ body.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }
+      toggleThemeBtn.addEventListener('click', ()=>{
+        applyTheme(body.getAttribute('data-theme')==='dark'?'light':'dark');
+        buildLineChart(currentYear);
+      });
+
+      // ELEMENTS
+      const gridEl = document.getElementById('grid');
+      const monthLabelsEl = document.getElementById('monthLabels');
+      const tooltip = document.getElementById('tooltip');
+      const addAppBtn = document.getElementById('addApp');
+      const addReachBtn = document.getElementById('addReach');
+      const editBtn = document.getElementById('editDay');
+      const totalsBadge = document.getElementById('totalsBadge');
+      const todayBadge = document.getElementById('todayBadge');
+      const yearSelect = document.getElementById('year');
+      const lsKeyEl = document.getElementById('lsKey');
+      const chartSVG = document.getElementById('trendChart');
+      const chartMeta = document.getElementById('chartMeta');
+
+      const modal = document.getElementById('editModal');
+      const backdrop = document.getElementById('modalBackdrop');
+      const form = document.getElementById('editorForm');
+      const dateInput = document.getElementById('editDate');
+      const appsInput = document.getElementById('editApps');
+      const reachInput = document.getElementById('editReach');
+      const cancelBtn = document.getElementById('cancelEdit');
+      const deleteBtn = document.getElementById('deleteDay');
+
+      const exportBtn = document.getElementById('exportData');
+      const importBtn = document.getElementById('importData');
+      const importFile = document.getElementById('importFile');
+
+      const today = new Date();
+      let currentYear = today.getFullYear();
+
+      // STORAGE
+      const STORAGE_PREFIX = 'two-metric-heatmap-';
+      function lsKey(year){ return `${STORAGE_PREFIX}${year}`; }
+      function loadData(year){ const raw = localStorage.getItem(lsKey(year)); return raw ? JSON.parse(raw) : {}; }
+      function saveData(year, data){ localStorage.setItem(lsKey(year), JSON.stringify(data)); }
+
+      // UTILS
+      function fmtDateISO(d){
+        // Use LOCAL date parts to avoid UTC shift issues
+        const y = d.getFullYear();
+        const m = String(d.getMonth()+1).padStart(2,'0');
+        const day = String(d.getDate()).padStart(2,'0');
+        return `${y}-${m}-${day}`;
+      }
+      function parseDateKey(iso){
+        // Parse YYYY-MM-DD as a LOCAL date (avoid Date("YYYY-MM-DD") which is UTC)
+        const [y,m,day] = (iso||'').split('-').map(Number);
+        return new Date(y||1970, (m||1)-1, day||1);
+      }
+      function fmtHuman(d){ return d.toLocaleDateString(undefined,{ year:'numeric', month:'short', day:'numeric'}); }
+      function startOfGrid(year){ const d = new Date(year,0,1); const dow = d.getDay(); d.setDate(d.getDate() - dow); return d; }
+      function endOfGrid(year){ const d = new Date(year,11,31); const dow = d.getDay(); d.setDate(d.getDate() + (6 - dow)); return d; }
+      function getCSSVar(name){
+        // Read from body (theme tokens) first, then fallback to :root
+        const vBody = getComputedStyle(document.body).getPropertyValue(name).trim();
+        if(vBody) return vBody;
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
+      function colorFrom(count, max, hue){
+        if(max <= 0 || count <= 0){
+          return getCSSVar('--zero');
+        }
+        const t = Math.min(1, count / max);
+        const light = 82 - Math.round(t * 42); // 82% -> 40%
+        const sat = 62 + Math.round(t * 18);   // 62% -> 80%
+        return `hsl(${hue} ${sat}% ${light}%)`;
+      }
+      function gradientCell(apps, reach, maxA, maxR){
+        const top = colorFrom(apps, maxA, getCSSVar('--green-h'));
+        const bottom = colorFrom(reach, maxR, getCSSVar('--blue-h'));
+        return `linear-gradient(180deg, ${top} 0 50%, ${bottom} 50% 100%)`;
+      }
+
+      // ---- Line chart (daily trend) ----
+      const NS = 'http://www.w3.org/2000/svg';
+      function extractSeries(year){
+        const data = loadData(year);
+        const start = new Date(year,0,1);
+        const end = (year===today.getFullYear() ? today : new Date(year,11,31));
+        const dates=[], apps=[], reach=[];
+        for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)){
+          const iso = fmtDateISO(d);
+          const rec = data[iso] || {a:0,r:0};
+          dates.push(iso);
+          apps.push(rec.a||0);
+          reach.push(rec.r||0);
+        }
+        return {dates, apps, reach, end};
+      }
+      function buildLineChart(year){
+        const svg = chartSVG; if(!svg) return;
+        const {dates, apps, reach, end} = extractSeries(year);
+        const n = dates.length; const boxW = 800, boxH = 220;
+        svg.setAttribute('viewBox', `0 0 ${boxW} ${boxH}`);
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        const margin = {left:40, right:12, top:10, bottom:24};
+        const innerW = boxW - margin.left - margin.right;
+        const innerH = boxH - margin.top - margin.bottom;
+        const yMax = Math.max(1, Math.max(0, ...apps, ...reach));
+        const step = n>1 ? innerW/(n-1) : 0;
+        const axisColor = getCSSVar('--border') || '#ccc';
+        const textColor = getCSSVar('--muted') || '#888';
+        const appsStroke = `hsl(${getCSSVar('--green-h')} 75% 50%)`;
+        const reachStroke = `hsl(${getCSSVar('--blue-h')} 75% 50%)`;
+        function xAt(i){ return margin.left + i*step; }
+        function yAt(v){ return margin.top + (1 - (v/(yMax||1))) * innerH; }
+        function svgEl(name, attrs){ const el = document.createElementNS(NS, name); for(const k in attrs){ el.setAttribute(k, attrs[k]); } return el; }
+        // axes
+        svg.appendChild(svgEl('line', {x1: margin.left, y1: margin.top+innerH, x2: margin.left+innerW, y2: margin.top+innerH, stroke: axisColor, 'stroke-width': 1}));
+        svg.appendChild(svgEl('line', {x1: margin.left, y1: margin.top, x2: margin.left, y2: margin.top+innerH, stroke: axisColor, 'stroke-width': 1}));
+        // y ticks
+        const ticks = 4;
+        for(let t=0;t<=ticks;t++){
+          const val = Math.round((yMax * t)/ticks);
+          const y = yAt(val);
+          svg.appendChild(svgEl('line', {x1: margin.left, y1: y, x2: margin.left+innerW, y2: y, stroke: axisColor, 'stroke-opacity': 0.2, 'stroke-width': 1}));
+          const label = svgEl('text', {x: 6, y: y+4, fill: textColor, 'font-size': 10}); label.textContent = String(val); svg.appendChild(label);
+        }
+        // month labels
+        let lastMonth = -1;
+        for(let i=0;i<n;i++){
+          const d = parseDateKey(dates[i]);
+          if(d.getMonth() !== lastMonth && d.getDate()===1){
+            lastMonth = d.getMonth(); const x = xAt(i);
+            svg.appendChild(svgEl('line', {x1: x, y1: margin.top, x2: x, y2: margin.top+innerH, stroke: axisColor, 'stroke-opacity': 0.15, 'stroke-width': 1}));
+            const tx = svgEl('text', {x, y: boxH-6, fill: textColor, 'font-size': 10}); tx.textContent = d.toLocaleString(undefined, {month:'short'}); svg.appendChild(tx);
+          }
+        }
+        function pathFrom(values){ let dstr=''; for(let i=0;i<n;i++){ const x=xAt(i), y=yAt(values[i]); dstr += (i===0 ? `M${x} ${y}` : `L${x} ${y}`); } return dstr; }
+        // lines
+        svg.appendChild(svgEl('path', {d: pathFrom(apps), fill: 'none', stroke: appsStroke, 'stroke-width': 2}));
+        svg.appendChild(svgEl('path', {d: pathFrom(reach), fill: 'none', stroke: reachStroke, 'stroke-width': 2}));
+        // crosshair + dots
+        const xhair = svgEl('line', {x1:0,y1:margin.top, x2:0,y2:margin.top+innerH, stroke: axisColor, 'stroke-opacity': 0.4, 'stroke-dasharray': '3,3', 'visibility':'hidden'});
+        const dotA = svgEl('circle', {r:3.5, fill: appsStroke, stroke: '#000', 'stroke-opacity':0.3, 'visibility':'hidden'});
+        const dotR = svgEl('circle', {r:3.5, fill: reachStroke, stroke: '#000', 'stroke-opacity':0.3, 'visibility':'hidden'});
+        svg.appendChild(xhair); svg.appendChild(dotA); svg.appendChild(dotR);
+        const overlay = svgEl('rect', {x: margin.left, y: margin.top, width: innerW, height: innerH, fill: 'transparent', 'pointer-events': 'all'});
+        overlay.addEventListener('mouseenter', ()=> tooltip.classList.add('show'));
+        overlay.addEventListener('mouseleave', ()=> { hideTip(); xhair.setAttribute('visibility','hidden'); dotA.setAttribute('visibility','hidden'); dotR.setAttribute('visibility','hidden'); });
+        overlay.addEventListener('mousemove', (e)=>{
+          const rect = svg.getBoundingClientRect(); let xi = e.clientX - rect.left - margin.left; xi = Math.max(0, Math.min(innerW, xi));
+          const i = Math.round(step ? xi/step : 0); const x = xAt(i); const yA = yAt(apps[i]||0); const yR = yAt(reach[i]||0);
+          xhair.setAttribute('x1', x); xhair.setAttribute('x2', x); xhair.setAttribute('visibility','visible');
+          dotA.setAttribute('cx', x); dotA.setAttribute('cy', yA); dotA.setAttribute('visibility','visible');
+          dotR.setAttribute('cx', x); dotR.setAttribute('cy', yR); dotR.setAttribute('visibility','visible');
+          const d = parseDateKey(dates[i]);
+          tooltip.textContent = `${fmtHuman(d)} — ${apps[i]||0} job application${(apps[i]||0)===1?'':'s'}, ${reach[i]||0} cold reachout${(reach[i]||0)===1?'':'s'}`;
+          positionTip(e);
+        });
+        svg.appendChild(overlay);
+        // meta
+        const totalA = apps.reduce((a,b)=>a+b,0); const totalR = reach.reduce((a,b)=>a+b,0);
+        if(chartMeta){ const endTxt = (year===today.getFullYear()) ? fmtHuman(end) : `${year}`; chartMeta.textContent = `YTD to ${endTxt}: ${totalA} apps • ${totalR} reachouts (peak day: ${yMax})`; }
+      }
+
+      // BUILD GRID
+      function populateYearSelect(){
+        yearSelect.innerHTML = '';
+        for(let y=currentYear-2; y<=currentYear+2; y++){
+          const opt = document.createElement('option');
+          opt.value = y; opt.textContent = y;
+          if(y===currentYear) opt.selected = true;
+          yearSelect.appendChild(opt);
+        }
+      }
+
+      function updateLegends(maxA, maxR){
+        const appsLegend = document.getElementById('appsLegend');
+        const reachLegend = document.getElementById('reachLegend');
+        const a0 = colorFrom(0,maxA, getCSSVar('--green-h'));
+        const a1 = colorFrom(Math.max(1, Math.ceil(maxA*0.25)), maxA, getCSSVar('--green-h'));
+        const a2 = colorFrom(Math.max(1, Math.ceil(maxA*0.5)), maxA, getCSSVar('--green-h'));
+        const a3 = colorFrom(Math.max(1, Math.ceil(maxA*0.75)), maxA, getCSSVar('--green-h'));
+        const a4 = colorFrom(maxA||1, maxA||1, getCSSVar('--green-h'));
+        appsLegend.style.background = `linear-gradient(90deg, ${a0}, ${a1}, ${a2}, ${a3}, ${a4})`;
+
+        const b0 = colorFrom(0,maxR, getCSSVar('--blue-h'));
+        const b1 = colorFrom(Math.max(1, Math.ceil(maxR*0.25)), maxR, getCSSVar('--blue-h'));
+        const b2 = colorFrom(Math.max(1, Math.ceil(maxR*0.5)), maxR, getCSSVar('--blue-h'));
+        const b3 = colorFrom(Math.max(1, Math.ceil(maxR*0.75)), maxR, getCSSVar('--blue-h'));
+        const b4 = colorFrom(maxR||1, maxR||1, getCSSVar('--blue-h'));
+        reachLegend.style.background = `linear-gradient(90deg, ${b0}, ${b1}, ${b2}, ${b3}, ${b4})`;
+      }
+
+      // Precisely align month labels to the first day cell of each month (accounts for borders/padding)
+      function alignMonthLabels(year){
+        const gridRect = gridEl.getBoundingClientRect();
+        const offset = 4; // small visual nudge to the right
+        monthLabelsEl.querySelectorAll('.m').forEach(span=>{
+          const m = Number(span.dataset.month);
+          if (Number.isNaN(m)) return;
+          const iso = `${year}-${String(m+1).padStart(2,'0')}-01`;
+          const cell = gridEl.querySelector(`.cell[data-date="${iso}"]`);
+          if(cell){
+            const left = cell.getBoundingClientRect().left - gridRect.left;
+            span.style.left = (left + offset) + 'px';
+          }
+        });
+      }
+
+      function build(year){
+        gridEl.querySelectorAll('.cell').forEach(n=>n.remove());
+        monthLabelsEl.innerHTML='';
+
+        const start = startOfGrid(year);
+        const end = endOfGrid(year);
+        const data = loadData(year);
+
+        let maxA=0, maxR=0, sumA=0, sumR=0;
+        for(let d=new Date(year,0,1); d<=new Date(year,11,31); d.setDate(d.getDate()+1)){
+          const k = fmtDateISO(d); const v = data[k];
+          if(v){ maxA = Math.max(maxA, v.a||0); maxR = Math.max(maxR, v.r||0); sumA+=v.a||0; sumR+=v.r||0; }
+        }
+
+        const monthToColumn = new Map();
+        (function(){
+          let week = 0;
+          for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)){
+            if(d.getDay()===0 && d>start){ week++; }
+            if(d.getDate()===1 && d.getFullYear()===year) monthToColumn.set(d.getMonth(), week);
+          }
+        })();
+
+        // compute total number of week columns to size the month label strip
+        let totalWeeks = 1;
+        for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)){
+          if(d.getDay()===0 && d>start){ totalWeeks++; }
+        }
+        const cellPx = parseFloat(getCSSVar('--cell')) || 14;
+        const gapPx  = parseFloat(getCSSVar('--gap'))  || 3;
+        monthLabelsEl.style.width = gridEl.scrollWidth + 'px';
+
+        monthToColumn.forEach((col, m) => {
+          const span = document.createElement('div');
+          span.className = 'm';
+          span.dataset.month = m;
+          span.style.left = (col*cellPx + col*gapPx) + 'px';
+          span.textContent = new Date(year, m, 1).toLocaleString(undefined,{month:'short'});
+          monthLabelsEl.appendChild(span);
+        });
+
+        let weekIndex = 0;
+        for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)){
+          const iso = fmtDateISO(d);
+          const inYear = d.getFullYear()===year;
+          if(d.getDay()===0 && d>start){ weekIndex++; }
+          const cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'cell' + (inYear? '' : ' out');
+          cell.style.gridRowStart = d.getDay()+1;
+          cell.style.gridColumnStart = weekIndex+1;
+          cell.dataset.date = iso;
+          cell.title = iso;
+          const v = data[iso] || { a:0, r:0 };
+          cell.dataset.a = v.a; cell.dataset.r = v.r;
+          if(inYear){ cell.style.background = gradientCell(v.a, v.r, maxA, maxR); }
+          // interactions
+          cell.addEventListener('mouseenter', (e)=> showTip(e.currentTarget, year));
+          cell.addEventListener('mousemove', positionTip);
+          cell.addEventListener('mouseleave', hideTip);
+          // Click = +1 apps, Shift+Click = +1 reach
+          cell.addEventListener('click', (e)=>{
+            if(!inYear) return;
+            if(e.shiftKey) increment(iso, 'r', year); else increment(iso, 'a', year);
+          });
+          // Double-click to edit
+          cell.addEventListener('dblclick', ()=> openEditor(iso));
+          gridEl.appendChild(cell);
+        }
+
+        updateBadges(year, sumA, sumR);
+        updateTodayBadge(year);
+        updateLegends(maxA, maxR);
+        lsKeyEl.textContent = lsKey(year);
+        buildLineChart(year);
+        alignMonthLabels(year);
+      }
+
+      function recomputeColors(year){
+        const data = loadData(year);
+        let maxA=0, maxR=0, sumA=0, sumR=0;
+        for(let d=new Date(year,0,1); d<=new Date(year,11,31); d.setDate(d.getDate()+1)){
+          const k = fmtDateISO(d); const v = data[k];
+          if(v){ maxA=Math.max(maxA,v.a||0); maxR=Math.max(maxR,v.r||0); sumA+=v.a||0; sumR+=v.r||0; }
+        }
+        gridEl.querySelectorAll('.cell').forEach(cell=>{
+          const date = cell.dataset.date; const dd = parseDateKey(date);
+          if(dd.getFullYear()!==year) return;
+          const a = + (data[date]?.a || 0); const r = + (data[date]?.r || 0);
+          cell.dataset.a = a; cell.dataset.r = r;
+          cell.style.background = gradientCell(a, r, maxA, maxR);
+        });
+        updateBadges(year, sumA, sumR);
+        updateLegends(maxA, maxR);
+        updateTodayBadge(year);
+        buildLineChart(year);
+      }
+
+      function updateBadges(year, sumA, sumR){ totalsBadge.textContent = `${sumA} apps • ${sumR} reachouts this year`; }
+      function updateTodayBadge(year){
+        const iso = fmtDateISO(today);
+        const v = (today.getFullYear()===year) ? (loadData(year)[iso] || {a:0,r:0}) : {a:0,r:0};
+        todayBadge.textContent = `Today: ${v.a||0} apps • ${v.r||0} reachouts`;
+      }
+
+      function increment(iso, key, year){
+        const data = loadData(year);
+        data[iso] = data[iso] || {a:0, r:0};
+        data[iso][key] = (data[iso][key]||0) + 1;
+        saveData(year, data);
+        recomputeColors(year);
+        if(tooltip.classList.contains('show') && tooltip.dataset.date===iso){
+          tooltip.textContent = tooltipText(parseDateKey(iso), data[iso]);
+        }
+      }
+
+      // Tooltip
+      function showTip(target, year){
+        const d = parseDateKey(target.dataset.date);
+        const data = loadData(year)[target.dataset.date] || {a:0,r:0};
+        tooltip.dataset.date = target.dataset.date;
+        tooltip.textContent = tooltipText(d, data);
+        tooltip.classList.add('show');
+      }
+      function tooltipText(d, v){
+        return `${fmtHuman(d)} — ${v.a||0} job application${(v.a||0)===1?'':'s'}, ${v.r||0} cold reachout${(v.r||0)===1?'':'s'}`;
+      }
+      function positionTip(e){
+        const pad = 12; let x = e.clientX + pad; let y = e.clientY + pad;
+        const rect = tooltip.getBoundingClientRect();
+        if(x + rect.width > window.innerWidth - 8) x = e.clientX - rect.width - pad;
+        if(y + rect.height > window.innerHeight - 8) y = e.clientY - rect.height - pad;
+        tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
+      }
+      function hideTip(){ tooltip.classList.remove('show'); }
+
+      // +1 buttons (reconnected)
+      addAppBtn.addEventListener('click', ()=>{
+        const y = +yearSelect.value; const iso = fmtDateISO(new Date());
+        if(new Date().getFullYear()!==y){ alert('Switch to the current year to add to today.'); return; }
+        increment(iso, 'a', y);
+      });
+      addReachBtn.addEventListener('click', ()=>{
+        const y = +yearSelect.value; const iso = fmtDateISO(new Date());
+        if(new Date().getFullYear()!==y){ alert('Switch to the current year to add to today.'); return; }
+        increment(iso, 'r', y);
+      });
+
+      // Editor modal
+      function openEditor(iso){
+        const d = iso ? parseDateKey(iso) : new Date();
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth()+1).padStart(2,'0');
+        const dd = String(d.getDate()).padStart(2,'0');
+        const dayISO = `${yyyy}-${mm}-${dd}`;
+        dateInput.value = dayISO;
+        const rec = (loadData(yyyy)[dayISO]) || {a:0, r:0};
+        appsInput.value = rec.a || 0;
+        reachInput.value = rec.r || 0;
+        modal.hidden = false;
+        setTimeout(()=>{ dateInput.focus(); }, 0);
+      }
+      function closeEditor(){ modal.hidden = true; }
+
+      editBtn.addEventListener('click', ()=> openEditor());
+      backdrop.addEventListener('click', closeEditor);
+      cancelBtn.addEventListener('click', closeEditor);
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !modal.hidden) closeEditor(); });
+
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const iso = dateInput.value;
+        const y = parseDateKey(iso).getFullYear();
+        const a = Math.max(0, parseInt(appsInput.value||'0',10));
+        const r = Math.max(0, parseInt(reachInput.value||'0',10));
+        const data = loadData(y);
+        if(a===0 && r===0){ delete data[iso]; } else { data[iso] = { a, r }; }
+        saveData(y, data);
+        if(y === +yearSelect.value){ recomputeColors(y); }
+        closeEditor();
+      });
+
+      deleteBtn.addEventListener('click', ()=>{
+        const iso = dateInput.value; const y = parseDateKey(iso).getFullYear();
+        const data = loadData(y); delete data[iso]; saveData(y, data);
+        if(y === +yearSelect.value){ recomputeColors(y); }
+        closeEditor();
+      });
+
+      // Export / Import
+      function listYearsInStorage(){
+        const years=[];
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i);
+          if(k && k.startsWith(STORAGE_PREFIX)){
+            const y=parseInt(k.slice(STORAGE_PREFIX.length),10);
+            if(!isNaN(y)) years.push(y);
+          }
+        }
+        return years.sort((a,b)=>a-b);
+      }
+      function exportAll(){
+        const years=listYearsInStorage();
+        const payload={ version:1, exportedAt:new Date().toISOString(), theme: body.getAttribute('data-theme'), years:{} };
+        years.forEach(y=>{ payload.years[y]=loadData(y); });
+        const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url; a.download='heatmap-data.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function importPayload(obj){
+        const yearsObj = obj.years || obj;
+        let countYears=0, countDays=0;
+        for(const yStr in yearsObj){
+          const y=parseInt(yStr,10); if(isNaN(y)) continue;
+          const existing=loadData(y);
+          const incoming=yearsObj[yStr]||{};
+          const merged={...existing, ...incoming};
+          saveData(y, merged);
+          countYears++; countDays += Object.keys(incoming).length;
+        }
+        build(currentYear);
+      window.addEventListener('resize', ()=> buildLineChart(currentYear));
+        alert(`Imported ${countDays} day(s) across ${countYears} year(s).`);
+      }
+      exportBtn.addEventListener('click', exportAll);
+      importBtn.addEventListener('click', ()=> importFile.click());
+      importFile.addEventListener('change', (e)=>{
+        const file=e.target.files && e.target.files[0]; if(!file) return;
+        const reader=new FileReader();
+        reader.onload=()=>{ try{ const obj=JSON.parse(reader.result); importPayload(obj); } catch(err){ alert('Import failed: '+ err.message); } finally { importFile.value=''; } };
+        reader.readAsText(file);
+      });
+
+      // YEAR / INIT
+      yearSelect.addEventListener('change', ()=>{ currentYear = +yearSelect.value; build(currentYear); });
+      gridEl.addEventListener('keydown', (e)=>{
+        const focus = document.activeElement; if(!focus.classList.contains('cell')) return;
+        const row = +focus.style.gridRowStart; const col = +focus.style.gridColumnStart; let next;
+        if(e.key==='ArrowRight') next = findCell(row, col+1);
+        if(e.key==='ArrowLeft') next = findCell(row, col-1);
+        if(e.key==='ArrowDown') next = findCell(row+1, col);
+        if(e.key==='ArrowUp') next = findCell(row-1, col);
+        if(next){ next.focus(); e.preventDefault(); }
+      });
+      function findCell(row, col){ return gridEl.querySelector(`.cell[style*="grid-row-start: ${row}"][style*="grid-column-start: ${col}"]`); }
+
+      populateYearSelect();
+      build(currentYear);
+      window.addEventListener('resize', ()=> { buildLineChart(currentYear); alignMonthLabels(currentYear); });
+
+      // Expose helpers for other scripts if needed
+      window._TwoMetric = { build, loadData, saveData, recomputeColors };
+    })();
+  </script>
+</body>
+</html>
