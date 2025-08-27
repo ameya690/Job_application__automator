@@ -1,5 +1,6 @@
 Bot intended to ease and to some extent automate the job application process.
 
 Plus: A beautiful, interactive heatmap to track your job applications and networking reachouts.
-<img width="1470" height="919" alt="image" src="https://github.com/user-attachments/assets/82a2b867-e768-4e30-8e7c-8046adf2a566" />
-<img width="1470" height="919" alt="image" src="https://github.com/user-attachments/assets/6e31493b-bba6-4a14-b5de-9aafb51cf0c2" />
+<img width="1436" height="776" alt="image" src="https://github.com/user-attachments/assets/7ec2192f-ab15-44ad-bdf7-2c579d29cbf9" />
+<img width="1436" height="776" alt="image" src="https://github.com/user-attachments/assets/b4252cff-fdf8-4167-9fad-cf19b705c522" />
+
