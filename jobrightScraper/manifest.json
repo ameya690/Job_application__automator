@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "JobRight Scraper",
+  "version": "3.0.0",
+  "description": "Scrape job details from newgrad-jobs.com with one click",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://jobright.ai/*"],
+      "js": ["scraper.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["resumes/*.tex"],
+      "matches": ["https://jobright.ai/*"]
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+%-------------------------
+% ATS-Optimized Resume for ML/NLP Research Scientist Role
+% Author : Ameya Vinay Panchpor
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{setspace}
+\input{glyphtounicode}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-7pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\titleformat{\subsection}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{\hspace{-.15in}}{0em}{}[\color{black}\vspace{-8pt}]
+
+\pdfgentounicode=1
+\setstretch{0.2}
+
+\newcommand{\resumeItem}[1]{
+  \item[$\vcenter{\hbox{\tiny$\bullet$}}$]\small{
+    #1 \vspace{-2pt}
+  }
+}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textbf{\small #1}, \textit{\small #3} & {\small #2} \\
+    & \textit{\small \textcolor{black}{#4}} \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small#1 & #2 \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%-------------------- HEADING --------------------
+\begin{center}
+    \textbf{\Huge \scshape Ameya Vinay Panchpor} \\ \vspace{5pt}
+    San Jose, CA $|$ (408) 396-2910 $|$
+    \href{mailto:ameya.panchpor@gmail.com}{ameya.panchpor@gmail.com} $|$
+    \href{https://www.linkedin.com/in/ameya-panchpor}{linkedin.com/in/ameya-panchpor} $|$
+    \href{https://github.com/ameya690}{github.com/ameya690}
+\end{center}
+
+%-------------------- EDUCATION --------------------
+\section{\textbf{Education}}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {San Jose State University, San Jose, CA}{Aug 2023 -- Dec 2025}
+      {Master of Science in Artificial Intelligence}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Machine Learning, Natural Language Processing, Computer Vision, Data Mining, Advanced Data Structures, Operating Systems}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {University of Pune, Pune, India}{Aug 2018 -- Jul 2022}
+      {Bachelor of Technology in Instrumentation and Control Engineering}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Data Structures, Control Systems, Python/C Programming, Computer Vision, Industrial Automation}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-------------------- SKILLS --------------------
+\section{\textbf{Technical Skills}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{
+  \textbf{Languages \& Tools:} Python, SQL, C/C++, Java, TypeScript/JavaScript, Bash, Go, Git, GitHub, GitLab, Jupyter \\
+  \textbf{AI:} Computer Vision, LLMs (LoRA, RAG),  scikit-learn, LangChain, LlamaIndex, OpenCV \\
+  \textbf{Systems \& Deployment:} PyTorch, TensorFlow, Keras, Docker, Kubernetes, GitHub Actions, Jenkins, ONNX, TensorRT, AWS, GCP, CUDA \\
+  \textbf{Data \& Platforms:} Airflow, Kafka, BigQuery, HDFS, PostgreSQL, MySQL, MongoDB, Firebase, React, Next.js
+}}
+\end{itemize}
+
+
+%-------------------- EXPERIENCE --------------------
+\section{\textbf{Experience}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Machine Learning Engineer} $|$ \emph{Aftershoot Pvt Ltd}}{Jan 2023 – Jun 2023}
+\resumeItemListStart
+  \resumeItem{Built and deployed an end-to-end \textbf{computer vision pipeline} (\textbf{face detection}, \textbf{blur filtering}, \textbf{keypoint estimation}) to auto-rank image quality using \textbf{AWS SageMaker}, accelerating throughput by \textbf{25\%}.}
+  \resumeItem{Deployed optimized deep learning models with \textbf{TorchScript} and \textbf{ONNX Runtime} on \textbf{AWS EC2} and \textbf{GCP Compute Engine}, enabling low-latency photo culling and reducing manual effort by \textbf{30\%} }
+  \resumeItem{Enhanced pose estimation accuracy by \textbf{5\%} through model quantization and architecture refinement.}
+  \resumeItem{Collaborated with infrastructure teams to streamline model deployment on edge devices, integrating with \textbf{AWS S3} for scalable storage and ensuring real-time performance.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{AI Research Intern} $|$ \emph{Carnegie Mellon University}}{Oct 2022 – Aug 2023}
+\resumeItemListStart
+  \resumeItem{Accelerated biomedical data processing by streamlining \textbf{HDF5/Parquet} pipelines for \textbf{20GB+} of spatial transcriptomic.}
+  \resumeItem{Evaluated \textbf{6} state-of-the-art diffusion and graph-based models for molecular property generation and prediction}
+  \resumeItem{Identified key limitations in generating valid, diverse molecules across \textbf{3} datasets with long-tailed data and few-shot learning}
+  \resumeItem{Performed comprehensive evaluations on \textbf{5+} benchmarks, reporting findings that highlighted \textbf{10\%} variability in molecule validity and \textbf{15\%} differences in prediction accuracy across the models studied}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Data Scientist} $|$ \emph{FITT, IIT Delhi}}{Aug 2022 – Jan 2023}
+\resumeItemListStart
+  \resumeItem{Engineered a data pipeline using \textbf{PostgreSQL} and \textbf{Python} that reduced aggregation time by \textbf{50\%}.}
+  \resumeItem{Developed \textbf{XGBoost} models for sepsis (\textbf{98.4\%} accuracy) and AMR detection (\textbf{98.1\%} accuracy), leveraging \textbf{timeseries} data analysis with \textbf{Spark}.}
+  \resumeItem{Enabled anomaly detection via \textbf{Python-SQL} workflows, improving data interpretability.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{AI Engineer} $|$ \emph{IIT BHU}}{March 2020 – Dec 2020}
+\resumeItemListStart
+  \resumeItem{Built \textbf{CNN}-based CT scan classifiers improving diagnostic accuracy by \textbf{25\%}.}
+  \resumeItem{Automated NLP-driven literature mining with \textbf{NLTK}, expediting outlier detection by \textbf{40\%}.}
+  \resumeItem{Deployed real-time prediction workflows using \textbf{GCP}, boosting forecast precision by \textbf{15\%}.}
+  \resumeItem{Integrated \textbf{OpenCV}, \textbf{Kafka}, \textbf{Airflow} for surveillance, enhancing crowd recognition by \textbf{35\%}.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-------------------- PROJECTS --------------------
+\section{\textbf{Projects}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Koe: Universal Voice \& Chat Customer Support System} $|$ \emph{\textbf{LLaMA3}, \textbf{Claude}, \textbf{AWS Bedrock}, \textbf{MongoDB}}}{}
+\resumeItemListStart
+  \resumeItem{Built an LLM-driven customer support assistant that won Best Project at \textbf{MongoDB GenAI Hackathon}.}
+  \resumeItem{Designed a semantic FAQ graph pipeline using \textbf{MongoDB Vector Store}, improving query match precision by \textbf{30\%}.}
+  \resumeItem{Integrated \textbf{LLaMA3} with \textbf{Vocode} for real-time voice calls, reducing response latency by \textbf{40\%}.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+         {\textbf{ConnectSphere:A scalable microblogging platform} $|$ \footnotesize\emph{React, Next.js, Chakra UI, GraphQL, PostgreSQL, Node.js, Express.js, Redis}}
+
+        \resumeItemListStart
+            \resumeItem{Designed and developed a scalable microblogging platform leveraging React, TypeScript, Node.js, GraphQL, and PostgreSQL, demonstrating comprehensive full-stack development capabilities and integration of diverse technologies.}
+            \resumeItem{Implemented advanced security measures including two-factor authentication and OAuth for Google sign-in, strengthening platform security.}
+            \resumeItem{To ensure the application’s reliability and code quality, we automated regression testing through a robust CI/CD pipeline using Jenkins and GitLab CI}
+        \resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{HPC for Parallel Data Analysis of the NYC Parking Dataset} $|$ \footnotesize\emph{MPI, OpenMP, C++, Python, Flask, Distributed technology}}
+         
+\resumeItemListStart
+\resumeItem{Significantly executed data extraction and processing on a 21 GB NYC parking violation dataset with over 10 million rows and 43 columns, achieving a 60\% reduction in total execution time by implementing parallel processing techniques with \textbf{OpenMPI} and \textbf{MPI}.}
+\resumeItem{Enhanced system reliability and monitoring in distributed environments with advanced logging and debugging, alongside meticulous performance benchmarking of parallel processes, identifying optimal performance at 4 concurrent processes}
+\resumeItemListEnd
+
+%-------------------- PUBLICATIONS --------------------
+\section{\textbf{Publications \& Talks}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \item \textbf{ThyCaps:} Capsule Network Based Thyroid Lesion Detection — Seybold Report, 2022
+  \item \textbf{Talk:} AI For Pathogen Detection — IInvenTiv 2022, IIT Delhi National Conference
+\end{itemize}
+
+%-------------------- ACHIEVEMENTS --------------------
+\section{\textbf{Achievements}}
+\resumeItemListStart
+  \resumeItem{5X Hackathon Winner in San Francisco Bay Area}
+  \resumeItem{Mentored 400+ students in ML and programming through Google DSC Pune}
+  \resumeItem{Developed CovidScope — public portal for pandemic resources, recognized by local media}
+\resumeItemListEnd
+
+\end{document}
+

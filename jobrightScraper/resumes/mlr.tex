@@ -1,0 +1,228 @@
+%-------------------------
+% Tailored Resume for Base ML Engineer
+% Author : Ameya Vinay Panchpor
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{setspace}
+\input{glyphtounicode}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-7pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\pdfgentounicode=1
+\setstretch{0.2}
+
+\newcommand{\resumeItem}[1]{
+  \item[$\vcenter{\hbox{\tiny$\bullet$}}$]\small{
+    #1 \vspace{-2pt}
+  }
+}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textbf{\small #1}, \textit{\small #3} & {\small #2} \\
+    & \textit{\small \textcolor{black}{#4}} \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small#1 & #2 \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%-------------------- HEADING --------------------
+\begin{center}
+    \textbf{\Huge \scshape Ameya Vinay Panchpor} \\ \vspace{5pt}
+    San Jose, CA $|$ (408) 396-2910 $|$
+    \href{mailto:ameya.panchpor@gmail.com}{ameya.panchpor@gmail.com} $|$
+    \href{https://www.linkedin.com/in/ameya-panchpor}{linkedin.com/in/ameya-panchpor} $|$
+    \href{https://github.com/ameya690}{github.com/ameya690}
+\end{center}
+
+%-------------------- EDUCATION --------------------
+\section{\textbf{Education}}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {San Jose State University, San Jose, CA}{Aug 2023 – Dec 2025}
+      {Master of Science in Artificial Intelligence}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Machine Learning, Natural Language Processing, Data Mining, Computer Vision, Advanced Data Structures, Operating Systems}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {University of Pune, Pune, India}{Aug 2018 – Jul 2022}
+      {Bachelor of Technology in Computer Engineering}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Data Structures, Python/C Programming, Computer Vision, Control Systems, Industrial Automation}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-------------------- SKILLS --------------------
+\section{\textbf{Technical Skills}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{
+  \textbf{Programming:} Python, Java, C++, SQL, Bash \\
+  \textbf{ML/AI:} Probabilistic/Statistical Modeling, Transformers, Deep Neural Networks, Scikit-learn, TensorFlow, PyTorch, XGBoost \\
+  \textbf{Data \& NLP:} Large-Scale Dataset Curation, Text Preprocessing, Semantic Retrieval, Spark, Pandas, NumPy \\
+  \textbf{Infrastructure:} Docker, Kubernetes, AWS, GCP, CI/CD, TorchScript, ONNX \\
+  \textbf{Databases:} PostgreSQL, MongoDB, Redis
+}}
+\end{itemize}
+
+%-------------------- EXPERIENCE --------------------
+\section{\textbf{Experience}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Machine Learning Engineer} $|$ \emph{Aftershoot Inc.}}{Jan 2023 – Jun 2023}
+\resumeItemListStart
+  \resumeItem{Built and deployed an end-to-end \textbf{computer vision pipeline} (\textbf{face detection}, \textbf{blur filtering}, \textbf{keypoint estimation}) to auto-rank image quality using \textbf{AWS SageMaker}, accelerating throughput by \textbf{25\%}.}
+  \resumeItem{Deployed optimized deep learning models with \textbf{TorchScript} and \textbf{ONNX Runtime} on \textbf{AWS EC2} and \textbf{GCP Compute Engine}, enabling low-latency photo culling and reducing manual effort by \textbf{30\%}.}
+  \resumeItem{Enhanced pose estimation accuracy by \textbf{5\%} through model quantization and architecture refinement.}
+  \resumeItem{Collaborated with infrastructure teams to streamline model deployment on edge devices, integrating with \textbf{AWS S3} for scalable storage and ensuring real-time performance.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Data Scientist} $|$ \emph{FITT, Indian Institute of Technology Delhi}}{Aug 2022 – Jan 2023}
+\resumeItemListStart
+  \resumeItem{Engineered a data pipeline using \textbf{PostgreSQL} and \textbf{Python} that reduced aggregation time by \textbf{50\%}.}
+  \resumeItem{Developed \textbf{XGBoost} models for sepsis (\textbf{98.4\%} accuracy) and AMR detection (\textbf{98.1\%} accuracy), leveraging \textbf{time-series} data analysis with \textbf{Spark}.}
+  \resumeItem{Enabled anomaly detection via \textbf{Python-SQL} workflows, improving data interpretability.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{AI Engineer} $|$ \emph{Indian Institute of Technology BHU, Varanasi}}{Mar 2020 – Dec 2020}
+\resumeItemListStart
+  \resumeItem{Built \textbf{CNN}-based CT scan classifiers that improved diagnostic accuracy by \textbf{25\%}.}
+  \resumeItem{Automated NLP-driven literature mining with \textbf{NLTK}, expediting outlier detection by \textbf{40\%}.}
+  \resumeItem{Deployed real-time prediction workflows using \textbf{GCP}, boosting forecast precision by \textbf{15\%}.}
+  \resumeItem{Integrated \textbf{OpenCV}, \textbf{Kafka}, and \textbf{Airflow} for surveillance, enhancing crowd recognition by \textbf{35\%}.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-------------------- PROJECTS --------------------
+\section{\textbf{Projects}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Koe: Universal Voice \& Chat Customer Support System} $|$ \emph{Llama3, Claude, AWS Bedrock, MongoDB}}{}
+\resumeItemListStart
+  \resumeItem{Developed an LLM-driven customer support agent, awarded Best Project at MongoDB GenAI Hackathon, for automating multi-modal query resolution across websites.}
+  \resumeItem{Engineered a web scraping and FAQ graph generation pipeline, stored in a MongoDB vector store, improving query accuracy by \textbf{30\%} using semantic retrieval.}
+  \resumeItem{Integrated \textbf{LLaMA 3} with Vocode API for real-time voice support, enabling phone-call-based interaction and reducing user response latency by \textbf{40\%}.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{weeRAG: Minimal LLM \& RAG Framework} $|$ \emph{PyTorch, Transformers, NumPy}}{}
+\resumeItemListStart
+\resumeItem{Developed a GPT-style transformer with \textbf{KV caching} and post-training \textbf{int8/4 quantization}, reducing model size by \textbf{$>$90\%} while retaining \textbf{95\% perplexity}.}
+\resumeItem{Created an evaluation suite with \textbf{EM/F1, faithfulness, hybrid reranker, and LLM-as-judge}, enabling automated benchmarking of retrieval pipelines.}
+\resumeItem{Built modules for \textbf{synthetic QA generation, knowledge graph extraction, and guardrails}, improving RAG interpretability, safety, and auditability.}
+\resumeItemListEnd
+
+
+\resumeProjectHeading
+  {\textbf{RoadRep-LoRA: Road Scene Understanding System} $|$ \emph{PyTorch Lightning, ONNX, Docker, Streamlit}}{}
+  \resumeItemListStart
+    \resumeItem{Built an end-to-end system for road scene understanding: dataset preprocessing (\textbf{30k+} frames), \textbf{BLIP}-based auto-captioning, \textbf{LoRA} fine-tuning, and \textbf{ONNX} deployment.}
+    \resumeItem{Quantized for CPU inference at \textbf{6 FPS}, and \textbf{Dockerized} the workflow for reproducible deployment.}
+    \resumeItem{Developed evaluation pipelines (retrieval, zero-shot classification) and a \textbf{CLI}/\textbf{Streamlit} demo for real-time scene querying.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{3D Scene Understanding via Stereo Imaging} $|$ \emph{Python, OpenCV, NumPy, CloudCompare}}{}
+\resumeItemListStart
+  \resumeItem{Developed disparity-based 3D reconstruction system using stereo imaging and spatial filters.}
+  \resumeItem{Visualized point clouds in CloudCompare to simulate spatial mapping for autonomous agents.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Artificially Abled: Gesture-to-Text Translation System} $|$ \emph{Python, TensorFlow, OpenPose, RNN, LSTM}}{}
+\resumeItemListStart
+  \resumeItem{Developed a real-time gesture recognition system achieving \textbf{92\%} classification accuracy using \textbf{LSTM}-based temporal modeling.}
+  \resumeItem{Utilized \textbf{OpenPose} for landmark extraction across \textbf{10,000+} labeled sequences, enabling robust motion analysis.}
+  \resumeItem{Achieved $<$\textbf{150ms} latency on edge devices using dropout-regularized lightweight models.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Perplexity for Images: Zero-Shot Object Search System} $|$ \emph{Python, Scikit-learn, OpenCV}}{}
+\resumeItemListStart
+  \resumeItem{Built a scalable NLP-driven computer vision pipeline with Grounded SAM, achieving \textbf{98\%} accuracy in zero-shot object detection for personalized queries.}
+  \resumeItem{Implemented a distributed reverse image search system with Redis, improving retrieval precision by \textbf{15\%} and latency by \textbf{40\%}.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-------------------- PUBLICATIONS & AWARDS --------------------
+\section{\textbf{Publications \& Awards}}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{MongoDB GenAI Hackathon 2024} $|$ \emph{Mountain View, CA}}{}
+    \resumeItemListStart
+      \resumeItem{Awarded \textbf{Best Project} for developing Koe — LLM-driven customer support system with semantic retrieval and real-time voice integration.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{ThyCaps: Capsule Network Based Thyroid Lesion Detection} $|$ \emph{Seybold Report, 2022}}{}
+    \resumeItemListStart
+      \resumeItem{First authored peer-reviewed research on applying Capsule Networks for medical imaging diagnostics.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-------------------- ACHIEVEMENTS --------------------
+\section{\textbf{Achievements}}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{Hackathons (5× Winner)}}{}
+    \resumeItemListStart
+      \resumeItem{Recognized for innovative ML/AI solutions across Bay Area competitions.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{Google Developer Student Club, Pune}}{}
+    \resumeItemListStart
+      \resumeItem{Mentored \textbf{400+ students} in ML and programming, fostering community learning.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{CovidScope — Pandemic Resource Portal}}{}
+    \resumeItemListStart
+      \resumeItem{Built and launched a public portal for pandemic resources, featured by local media outlets.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}

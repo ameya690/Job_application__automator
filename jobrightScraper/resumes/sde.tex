@@ -1,0 +1,222 @@
+%-------------------------
+% Tailored Resume for Software Development Engineer
+% Author : Ameya Vinay Panchpor
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{setspace}
+\input{glyphtounicode}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-7pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\pdfgentounicode=1
+\setstretch{0.2}
+
+\newcommand{\resumeItem}[1]{
+  \item[$\vcenter{\hbox{\tiny$\bullet$}}$]\small{
+    #1 \vspace{-2pt}
+  }
+}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textbf{\small #1}, \textit{\small #3} & {\small #2} \\
+    & \textit{\small \textcolor{black}{#4}} \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small#1 & #2 \\
+  \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%-------------------- HEADING --------------------
+\begin{center}
+    \textbf{\Huge \scshape Ameya Vinay Panchpor} \\ \vspace{5pt}
+    San Jose, CA $|$ (408) 396-2910 $|$
+    \href{mailto:ameya.panchpor@gmail.com}{ameya.panchpor@gmail.com} $|$
+    \href{https://www.linkedin.com/in/ameya-panchpor}{linkedin.com/in/ameya-panchpor} $|$
+    \href{https://github.com/ameya690}{github.com/ameya690}
+\end{center}
+
+%-------------------- EDUCATION --------------------
+\section{\textbf{Education}}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {San Jose State University, San Jose, CA}{Aug 2023 – Dec 2025}
+      {Master of Science in Artificial Intelligence}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Machine Learning, Natural Language Processing, Data Mining, Computer Vision, Advanced Data Structures, Operating Systems}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {University of Pune, Pune, India}{Aug 2018 – Jul 2022}
+      {Bachelor of Technology in Computer Engineering}{}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework:} Data Structures, Python/C Programming, Computer Vision, Control Systems, Industrial Automation}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-------------------- SKILLS --------------------
+\section{\textbf{Technical Skills}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{
+  \textbf{Programming:} Python, Java, C++, SQL, Bash \\
+  \textbf{ML/AI:} Probabilistic/Statistical Modeling, Transformers, Deep Neural Networks, Scikit-learn, TensorFlow, PyTorch, XGBoost \\
+  \textbf{Data \& NLP:} Large-Scale Dataset Curation, Text Preprocessing, Semantic Retrieval, Spark, Pandas, NumPy \\
+  \textbf{Infrastructure:} Docker, Kubernetes, AWS, GCP, CI/CD, TorchScript, ONNX \\
+  \textbf{Databases:} PostgreSQL, MongoDB, Redis
+}}
+\end{itemize}
+
+%-------------------- EXPERIENCE --------------------
+\section{\textbf{Experience}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Software Engineer} $|$ \emph{Aftershoot Inc.}}{Jan 2023 – Jun 2023}
+\resumeItemListStart
+  \resumeItem{Developed RESTful APIs with \textbf{Flask} to integrate ML models into production, improving modularity and enabling seamless updates.}
+  \resumeItem{Optimized computer vision pipelines (\textbf{pose detection, body segmentation}) using \textbf{PyTorch} and \textbf{Keras}, improving accuracy by \textbf{20\%}.}
+  \resumeItem{Collaborated using Agile and SDLC practices; reduced image processing time by \textbf{25\%} and manual culling time by \textbf{30\%}.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Software Engineer} $|$ \emph{FITT, Indian Institute of Technology Delhi}}{Aug 2022 – Jan 2023}
+\resumeItemListStart
+  \resumeItem{Developed an automated invoice management system using \textbf{Python, Flask, PostgreSQL}, reducing manual processing time by \textbf{50\%}.}
+  \resumeItem{Built a web dashboard with \textbf{Flask, MySQL} for real-time invoice tracking, streamlining financial operations.}
+  \resumeItem{Implemented a \textbf{React} frontend to visualize real-time payment data, enhancing financial decision-making.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Software Intern} $|$ \emph{Indian Institute of Technology BHU, Varanasi}}{Mar 2020 – Dec 2020}
+\resumeItemListStart
+  \resumeItem{Developed scalable data pipelines in \textbf{Python, Pandas} to process transcriptomics datasets, improving reproducibility of molecular inference.}
+  \resumeItem{Built \textbf{deep learning classifiers} (PyTorch) for medical imaging, improving CT scan diagnostic accuracy by \textbf{25\%}.}
+  \resumeItem{Mined \textbf{44k+ research articles} using \textbf{Databricks, NLTK}, enabling anomaly detection and expediting biomedical analysis by \textbf{40\%}.}
+  \resumeItem{Engineered forecasting models with \textbf{Scikit-learn, Pandas} on \textbf{GCP}, improving COVID-19 trend prediction accuracy by \textbf{15\%}.}
+  \resumeItem{Implemented \textbf{Kafka} and \textbf{Airflow} for real-time surveillance data streaming, enhancing detection efficiency by \textbf{35\%}.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+% -------------------- PROJECTS --------------------
+\vspace{-3pt}
+\section{\textbf{Projects}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{weeRAG: Minimal LLM \& RAG Framework} $|$ \emph{PyTorch, FastAPI, SQLite, NumPy}}{}
+\resumeItemListStart
+\resumeItem{Built an end-to-end open-source RAG framework with \textbf{20+ modular components} covering tokenization, retrieval, routing, caching, and streaming.}
+\resumeItem{Implemented a \textbf{vector store, retriever, and router} achieving sub-\textbf{100ms retrieval latency}, and integrated \textbf{FastAPI SSE streaming} for low-latency token delivery.}
+\resumeItem{Developed a \textbf{SQLite-backed caching layer} and tracing utilities for reproducible, scalable inference pipelines.}
+\resumeItemListEnd
+
+
+\resumeProjectHeading
+         {\textbf{ConnectSphere:A scalable microblogging platform} $|$ \footnotesize\emph{React, Next.js, Chakra UI, GraphQL, PostgreSQL, Node.js, Express.js, Redis}}
+
+        \resumeItemListStart
+            \resumeItem{Designed and developed a scalable microblogging platform leveraging React, TypeScript, Node.js, GraphQL, and PostgreSQL, demonstrating comprehensive full-stack development capabilities and integration of diverse technologies.}
+            \resumeItem{Implemented advanced security measures including two-factor authentication and OAuth for Google sign-in, strengthening platform security.}
+            \resumeItem{To ensure the application’s reliability and code quality, we automated regression testing through a robust CI/CD pipeline using Jenkins and GitLab CI}
+        \resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Cloud Native Message Queue System} $|$ \emph{Python, Raft, Kafka, Docker}}{}
+\resumeItemListStart
+  \resumeItem{Designed a \textbf{Kafka}-inspired multi-cluster architecture, with \textbf{3-5} brokers per cluster for scalable message streaming.}
+  \resumeItem{Implemented \textbf{Raft} protocol, achieving \textbf{99.9\%} data consistency and synchronization across distributed brokers.}
+  \resumeItem{Deployed system using \textbf{Docker}, reducing setup time by \textbf{40\%} and enabling fault-tolerant streaming.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Distributed File Storage System} $|$ \emph{Golang, MongoDB, Kubernetes}}{}
+\resumeItemListStart
+  \resumeItem{Built a distributed file storage system using \textbf{Golang}, achieving \textbf{50\%} reduction in read/write latency.}
+  \resumeItem{Integrated \textbf{MongoDB} for metadata storage and \textbf{Kubernetes} for orchestration, ensuring \textbf{99.9\%} uptime.}
+  \resumeItem{Optimized data retrieval with caching, improving throughput by \textbf{40\%} for high-volume access.}
+\resumeItemListEnd
+        
+\resumeProjectHeading
+{\textbf{HPC for Parallel Data Analysis of the NYC Parking Dataset} $|$ \footnotesize\emph{MPI, OpenMP, C++, Python, Flask, Distributed technology}}
+         
+\resumeItemListStart
+\resumeItem{Significantly executed data extraction and processing on a 21 GB NYC parking violation dataset with over 10 million rows and 43 columns, achieving a 60\% reduction in total execution time by implementing parallel processing techniques with \textbf{OpenMPI} and \textbf{MPI}.}
+\resumeItem{Enhanced system reliability and monitoring in distributed environments with advanced logging and debugging, alongside meticulous performance benchmarking of parallel processes, identifying optimal performance at 4 concurrent processes}
+\resumeItemListEnd
+
+%-------------------- PUBLICATIONS & AWARDS --------------------
+\section{\textbf{Publications \& Awards}}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{MongoDB GenAI Hackathon 2024} $|$ \emph{Mountain View, CA}}{}
+    \resumeItemListStart
+      \resumeItem{Awarded \textbf{Best Project} for Koe — LLM-driven customer support system with semantic retrieval and real-time voice integration.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{ThyCaps: Capsule Network Based Thyroid Lesion Detection} $|$ \emph{Seybold Report, 2022}}{}
+    \resumeItemListStart
+      \resumeItem{Co-authored peer-reviewed research on Capsule Networks for medical imaging diagnostics.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-------------------- ACHIEVEMENTS --------------------
+\section{\textbf{Achievements}}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{Hackathons (5× Winner)}}{}
+    \resumeItemListStart
+      \resumeItem{Recognized for innovative ML/AI solutions across Bay Area competitions.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{Google Developer Student Club, Pune}}{}
+    \resumeItemListStart
+      \resumeItem{Mentored \textbf{400+ students} in ML and programming, fostering community learning.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{CovidScope — Pandemic Resource Portal}}{}
+    \resumeItemListStart
+      \resumeItem{Built and launched a public portal for pandemic resources, featured in local media.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}
